@@ -1,0 +1,51 @@
+[
+    {
+        "name": "xcp",
+        "asset_name": "covalc",
+        "base": "https://xchain.io/api/",
+        "balance_endpoint": "balances/{address}",
+        "params": [
+            "address"
+        ],
+        "asset_filter": {"asset": "asset_name"},
+        "collection": "data",
+        "balance_location": "quantity",
+        "example": "https://xchain.io/api/balances/19cCGRb5XLuuzoRvDLyRm888G8ank5WFyM"
+    },
+    {
+        "name": "ripple",
+        "asset_name": "xrp",
+        "base": "https://data.ripple.com/v2/",
+        "balance_endpoint": "accounts/{address}/balances",
+        "params": [
+            "address"
+        ],
+        "asset_filter": {"currency": "asset_name"},
+        "collection": "balances",
+        "balance_location": "value",
+        "example": "https://data.ripple.com/v2/accounts/rJeNzSDnptNoJ9YtDSxTu2q3DF7iNcpiJX/balances"
+    },
+    {
+        "name": "eos",
+        "base": "https://api.eospark.com/api",
+        "balance_endpoint": "?module=account&action=get_account_balance&apikey=a9564ebc3289b7a14551baf8ad5ec60a&account={address}",
+        "params": [
+            "address"
+        ],
+        "item": "data",
+        "balance_location": "balance",
+        "example": "https://api.eospark.com/api?module=account&action=get_account_balance&apikey=a9564ebc3289b7a14551baf8ad5ec60a&account=helloworldjs"
+    },
+    {
+        "name": "emblem",
+        "asset_name": "fuel",
+        "asset_filter": {"name": "asset_name"},
+        "base": "https://sandboxbeta.myemblemwallet.com/balance",
+        "balance_endpoint": "?address={address}",
+        "params": [
+            "address"
+        ],
+        "balance_location": "qty",
+        "example": "https://sandboxbeta.myemblemwallet.com/balance?address=1La5n4Mbc8GkXVhS3tVFKiCKzzb7JZupxY"
+    }
+]

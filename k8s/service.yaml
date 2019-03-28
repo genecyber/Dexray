@@ -1,0 +1,25 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Service
+  metadata:
+    name: dexray
+    namespace: default
+    selfLink: /api/v1/namespaces/default/services/dexray
+  spec:
+    ports:
+    - name: "webserver"
+      port: 80
+      protocol: TCP
+      targetPort: 3000
+    selector:
+      io.kompose.service: dexray
+    sessionAffinity: None
+    type: LoadBalancer
+  status:
+    loadBalancer:
+      ingress:
+kind: List
+metadata: {}
+resourceVersion: ""
+selfLink: ""
