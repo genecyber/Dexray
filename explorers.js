@@ -21,33 +21,44 @@ explorers.get = function(name){
     explorer.request = function(address, asset_name, cb){
         var explorer = this
         var endpoint = explorer.build({"address": address})
-        request.get(endpoint, (error, response, body)=>{
-            var results = JSON.parse(body)
-            if (explorer.asset_filter) {
-                var key = Object.keys(explorer.asset_filter)[0]
-                var value = explorer.asset_filter[key]
-                var filter = explorer[value]
-                var filtered
-                if (explorer.collection) { 
-                    filtered = results[explorer.collection].filter(item=>{return item[key].toLowerCase() === (asset_name || filter) })
-                } else {
-                    filtered = results.filter(item=>{
-                        return item[key].toLowerCase() === (asset_name || filter) 
-                    })
+        try {
+            request.get(endpoint, (error, response, body)=>{
+                if (error) {
+                    console.log("Error detected", error)
+                    // throw error
+                    return cb(Number(-1))
                 }
-                if (filtered.length > 0) {
-                    if (explorer.balance_location) {
-                        return cb(Number(filtered[0][explorer.balance_location]))
+                // console.log("--BODY", body, 'response', response, 'error', error)
+                var results = JSON.parse(body)
+                if (explorer.asset_filter) {
+                    var key = Object.keys(explorer.asset_filter)[0]
+                    var value = explorer.asset_filter[key]
+                    var filter = explorer[value]
+                    var filtered
+                    if (explorer.collection) { 
+                        filtered = results[explorer.collection].filter(item=>{return item[key].toLowerCase() === (asset_name || filter) })
                     } else {
-                        return cb(Number(filtered[0]))
+                        filtered = results.filter(item=>{
+                            return item[key].toLowerCase() === (asset_name || filter) 
+                        })
+                    }
+                    if (filtered.length > 0) {
+                        if (explorer.balance_location) {
+                            return cb(Number(filtered[0][explorer.balance_location]))
+                        } else {
+                            return cb(Number(filtered[0]))
+                        }
+                    } else {
+                        return cb(Number(0))
                     }
                 } else {
-                    return cb(Number(0))
+                    return cb(Number(results[explorer.item][explorer.balance_location]))
                 }
-            } else {
-                return cb(Number(results[explorer.item][explorer.balance_location]))
-            }
-        })
+            })
+        } catch(err) {
+            console.log("ERRORED!!!!!", err)
+            return cb(Number(0))
+        }
     }
     return explorer
 }

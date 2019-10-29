@@ -37,10 +37,30 @@ app.get('/:chain/:address/balance', (req, res)=>{
     var chain = req.params.chain
     var address = req.params.address
     var asset_name = req.query.asset
-    getBalance(asset_name, address, chain, (balance)=>{
-        res.json({balance: balance})
-    })
+    
+         /* getBalance(asset_name, address, chain, (balance)=>{
+
+            res.json({balance: balance, address: address, chain: chain, asset_name: asset_name})
+        }) */
+        
+        getBalanceRetry(asset_name, address, chain, (response)=>{
+            res.json(response)
+        })
+    
 })
+
+function getBalanceRetry(asset_name, address, chain, cb){
+    getBalance(asset_name, address, chain, (balance)=>{
+        if (balance === -1) {
+            console.log('retrying for', asset_name, address, chain)
+            setTimeout(()=>{
+                getBalanceRetry(asset_name, address, chain, cb)
+            }, 3000)
+        } else {
+            return cb({balance: balance, address: address, chain: chain, asset_name: asset_name})
+        }
+    })
+}
 
 app.get('/quote', (req, res)=>{
     var update = req.query.update === "true" || false
@@ -65,6 +85,8 @@ app.listen(3000)
 
 function getBalance(asset_name, address, chain, cb){
     var explorer = explorers.get(chain)
+    //console.log("explorer", explorer)
+    console.log('asset_name', asset_name, 'address', address, 'chain', chain)
     return explorer.request(address, asset_name, cb)    
 }
 

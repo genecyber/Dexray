@@ -29,7 +29,7 @@ items:
       spec:
         volumes:
         containers:
-        - image: us.gcr.io/multichain-prod/dexray:v1
+        - image: us.gcr.io/multichain-prod/dexray:v5
           imagePullPolicy: Always
           name: dexray
           ports:

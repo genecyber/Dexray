@@ -40,12 +40,12 @@
         "name": "emblem",
         "asset_name": "fuel",
         "asset_filter": {"name": "asset_name"},
-        "base": "https://sandboxbeta.myemblemwallet.com/balance",
+        "base": "http://34.67.105.21/balance",
         "balance_endpoint": "?address={address}",
         "params": [
             "address"
         ],
         "balance_location": "qty",
-        "example": "https://sandboxbeta.myemblemwallet.com/balance?address=1La5n4Mbc8GkXVhS3tVFKiCKzzb7JZupxY"
+        "example": "http://34.67.105.21/balance?address=1La5n4Mbc8GkXVhS3tVFKiCKzzb7JZupxY"
     }
 ]
