@@ -3,9 +3,9 @@ items:
 - apiVersion: v1
   kind: Service
   metadata:
-    name: dexray
+    name: dexray2
     namespace: default
-    selfLink: /api/v1/namespaces/default/services/dexray
+    selfLink: /api/v1/namespaces/default/services/dexray2
   spec:
     ports:
     - name: "webserver"
@@ -13,7 +13,7 @@ items:
       protocol: TCP
       targetPort: 3000
     selector:
-      io.kompose.service: dexray
+      io.kompose.service: dexray2
     sessionAffinity: None
     type: LoadBalancer
   status:

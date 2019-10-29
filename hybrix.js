@@ -7,7 +7,7 @@ app.use(jsonParser)
 var Hybrix = require('./hybrix-lib.nodejs.js')
 var hybrix = new Hybrix.Interface({http:require('http')}); // Provide a http connector
 // var HYBRIX_URL = "http://104.197.98.21:1111/"
-var HYBRIX_URL = "http://35.238.98.193/"
+var HYBRIX_URL = "http://hybrix/"
 // var HYBRIX_URL = "http://localhost:4000/"
 
 app.use(function (req, res, next) {
