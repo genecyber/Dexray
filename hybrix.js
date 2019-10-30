@@ -7,8 +7,9 @@ app.use(jsonParser)
 var Hybrix = require('./hybrix-lib.nodejs.js')
 var hybrix = new Hybrix.Interface({http:require('http')}); // Provide a http connector
 // var HYBRIX_URL = "http://104.197.98.21:1111/"
-var HYBRIX_URL = "http://hybrix/"
+// var HYBRIX_URL = "http://hybrix/"
 // var HYBRIX_URL = "http://localhost:4000/"
+var HYBRIX_URL = "http://35.238.98.193/"
 
 app.use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -65,5 +66,33 @@ app.get('/chains', (req, res)=>{
         }
       );
 })
+
+app.get('/:coin/:address/getRawTransaction', (req, res) => {
+  var asset = req.query.asset
+  var coin = req.params.coin
+  var address = req.params.address
+  if (asset && !(asset === coin)) {
+      coin = coin + '.' + asset
+  }
+  console.log(asset, coin, address)
+  hybrix.sequential(
+    [
+      'init', // Initialize hybrix
+      { host: HYBRIX_URL },
+      'addHost', // Add and initialize the host
+      { query: '/asset/' + coin + '/unspent/' + address + '/1'  },
+      'rout' // Query for asset balance
+    ],
+    (utxo) => {
+      console.log(utxo,b,c);
+      res.json({utxo: utxo, address: address, chain: coin, asset_name: asset})
+    }, (err)=>{
+      res.json({err: err})
+    }, (progress)=>{
+      // res.json({progress: progress})
+      console.log('progress', progress)
+    }
+  );
+});
 
 app.listen(3000)
