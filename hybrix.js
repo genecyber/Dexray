@@ -84,7 +84,7 @@ app.get('/:coin/:address/getRawTransaction', (req, res) => {
       'rout' // Query for asset balance
     ],
     (utxo) => {
-      console.log(utxo,b,c);
+      console.log(utxo);
       res.json({utxo: utxo, address: address, chain: coin, asset_name: asset})
     }, (err)=>{
       res.json({err: err})
