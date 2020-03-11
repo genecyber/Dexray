@@ -29,7 +29,18 @@ app.get('/', (req, res)=>{
 })
 
 app.get('/chains', (req, res)=>{
-    var chains = explorers.map(chain=>{ return chain.name})
+    var chains = []// explorers.map(chain=>{ return chain.name})
+    explorers.forEach(explorer=>{
+        if (explorer.family) {
+            chains.push(explorer.name + "." + explorer.family)
+        } else {
+            if (explorer.name !== explorer.asset_name) {
+                chains.push(explorer.name + "." + explorer.asset_name)
+            } else {
+                chains.push(explorer.name)
+            }
+        }
+    })
     res.json(chains)
 })
 
@@ -37,27 +48,30 @@ app.get('/:chain/:address/balance', (req, res)=>{
     var chain = req.params.chain
     var address = req.params.address
     var asset_name = req.query.asset
+    var contract = req.query.contract
     
          /* getBalance(asset_name, address, chain, (balance)=>{
 
             res.json({balance: balance, address: address, chain: chain, asset_name: asset_name})
         }) */
         
-        getBalanceRetry(asset_name, address, chain, (response)=>{
+        getBalanceRetry(asset_name, address, chain, contract, (response)=>{
             res.json(response)
         })
     
 })
 
-function getBalanceRetry(asset_name, address, chain, cb){
-    getBalance(asset_name, address, chain, (balance)=>{
+function getBalanceRetry(asset_name, address, chain, contract, cb){
+    getBalance(asset_name, address, chain, contract, (balance)=>{
         if (balance === -1) {
             console.log('retrying for', asset_name, address, chain)
             setTimeout(()=>{
-                getBalanceRetry(asset_name, address, chain, cb)
+                getBalanceRetry(asset_name, address, chain, contract, cb)
             }, 3000)
+        } else if (balance.error) {
+            return cb(balance)
         } else {
-            return cb({balance: balance, address: address, chain: chain, asset_name: asset_name})
+            return cb({balance: balance, address: address, chain: chain, asset_name: asset_name, contract: contract})
         }
     })
 }
@@ -83,11 +97,14 @@ app.get('/quote', (req, res)=>{
 
 app.listen(3000)
 
-function getBalance(asset_name, address, chain, cb){
-    var explorer = explorers.get(chain)
+function getBalance(asset_name, address, chain, contract, cb){
+    var explorer = explorers.get(chain, asset_name)
     //console.log("explorer", explorer)
+    if (explorer === "ERROR") {
+        return cb({success: false, "error": "Unknown chain or asset"});
+    }
     console.log('asset_name', asset_name, 'address', address, 'chain', chain)
-    return explorer.request(address, asset_name, cb)    
+    return explorer.request(address, asset_name, contract, cb)    
 }
 
 function getCMCRates() {

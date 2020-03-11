@@ -27,6 +27,7 @@
     },
     {
         "name": "eos",
+        "asset_name": "eos",
         "base": "https://api.eospark.com/api",
         "balance_endpoint": "?module=account&action=get_account_balance&apikey=a9564ebc3289b7a14551baf8ad5ec60a&account={address}",
         "params": [
@@ -47,5 +48,44 @@
         ],
         "balance_location": "qty",
         "example": "http://34.67.105.21/balance?address=1La5n4Mbc8GkXVhS3tVFKiCKzzb7JZupxY"
+    },
+    {
+        "name": "btc",
+        "asset_name": "btc",
+        "base": "https://api.blockcypher.com/v1/btc/main/addrs/",
+        "balance_endpoint": "{address}/balance",
+        "params": [
+            "address"
+        ],
+        "post":"fromSat",
+        "balance_location": "final_balance",
+        "example": "https://api.blockcypher.com/v1/btc/main/addrs/1DEP8i3QJCsomS4BSMY2RpU1upv62aGvhD/balance"
+    },
+    {
+        "name": "eth",
+        "base": "https://api.etherscan.io/api?module=account&action=tokenbalance",
+        "balance_endpoint": "&contractaddress={contract}&address={address}&tag=latest&apikey=GC2Q118AB2HIYZZFN25CQ956VEQUFVZIII",
+        "family": "token",
+        "params": [
+            "address",
+            "contract"
+        ],
+        "balance_location": "result",
+        "api_key": "GC2Q118AB2HIYZZFN25CQ956VEQUFVZIII",
+        "post": "decimals",
+        "example": "https://api.etherscan.io/api?module=account&action=tokenbalance&contractaddress=0x57d90b64a1a57749b0f932f1a3395792e12e7055&address=0xe04f27eb70e025b78871a2ad7eabe85e61212761&tag=latest&apikey=YourApiKeyToken"
+    },
+    {
+        "name": "eth",
+        "asset_name": "eth",
+        "base": "https://api.etherscan.io/api?module=account&action=balance",
+        "balance_endpoint": "&address={address}&tag=latest&apikey=GC2Q118AB2HIYZZFN25CQ956VEQUFVZIII",
+        "params": [
+            "address"
+        ],
+        "balance_location": "result",
+        "api_key": "GC2Q118AB2HIYZZFN25CQ956VEQUFVZIII",
+        "post": "fromWei",
+        "example": "https://api.etherscan.io/api?module=account&action=balance&address=0xe04f27eb70e025b78871a2ad7eabe85e61212761&tag=latest&apikey=YourApiKeyToken"
     }
 ]
