@@ -7,15 +7,15 @@ items:
       deployment.kubernetes.io/revision: "1"
     generation: 1
     labels:
-      io.kompose.service: dexray2
-    name: dexray2
+      io.kompose.service: dexray3
+    name: dexray3
     namespace: default
-    selfLink: /apis/extensions/v1beta1/namespaces/default/deployments/dexray2
+    selfLink: /apis/extensions/v1beta1/namespaces/default/deployments/dexray3
   spec:
     replicas: 1
     selector:
       matchLabels:
-        io.kompose.service: dexray2
+        io.kompose.service: dexray3
     strategy:
       rollingUpdate:
         maxSurge: 1
@@ -25,13 +25,13 @@ items:
       metadata:
         creationTimestamp: null
         labels:
-          io.kompose.service: dexray2
+          io.kompose.service: dexray3
       spec:
         volumes:
         containers:
-        - image: us.gcr.io/multichain-prod/dexray2:v1
+        - image: us.gcr.io/multichain-prod/dexray3:v1
           imagePullPolicy: Always
-          name: dexray2
+          name: dexray3
           ports:
           - containerPort: 3000
             protocol: TCP
